@@ -1,0 +1,49 @@
+server:
+  port: 8080
+
+spring:
+  threads:
+    virtual:
+      enabled: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/judgedb
+    username: postgres
+    password: postgres
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 2000ms
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        concurrency: 5
+        max-concurrency: 20
+        prefetch: 1
+
+judge:
+  rabbitmq:
+    queue: submissionQueue
+    exchange: submissionExchange
+    routing-key: submissionRoutingKey
+  docker:
+    # On Windows Docker Desktop, named pipe or npipe works, fallback to unix domain socket on WSL/Linux
+    host: npipe:////./pipe/docker_engine
